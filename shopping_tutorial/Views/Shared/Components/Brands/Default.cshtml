@@ -1,0 +1,6 @@
+﻿@model IEnumerable<BrandModel>
+@foreach(var item in Model)
+{
+   
+    <li><a asp-controller="Brand" asp-route-slug="@item.slug" > <span class="pull-right"></span>@item.Name</a></li>
+}

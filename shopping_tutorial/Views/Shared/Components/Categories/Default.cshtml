@@ -1,0 +1,9 @@
+﻿@model IEnumerable<CategoryModel>
+@foreach (var item in Model)
+{
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title"><a asp-route-slug="@item.slug" asp-controller="Category" asp-action="index" >@item.Name</a></h4>
+		</div>
+	</div>
+}

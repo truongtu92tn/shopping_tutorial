@@ -1,0 +1,78 @@
+﻿@model shopping_tutorial.Models.ProductModel
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+<h1>Create Product</h1>
+
+<h4>ProductModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+        
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Slug" class="control-label"></label>
+                <input asp-for="Slug" class="form-control" />
+            
+                <span asp-validation-for="Slug" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="co  ntrol-label"></label>
+                <textarea name="Description" asp-for="Description" class="form-control" /></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrandId" class="control-label"></label>
+                <select asp-for="BrandId" asp-items="ViewBag.Brand" class="form-control" asp-items="ViewBag.Brand"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Category"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagerUpload" class="control-label">Upload Imager</label>
+                <input asp-for="ImagerUpload" class="form-control" />
+                <span asp-validation-for="Imager" class="text-danger"></span>
+                <img src="" id="imgpreview" style="width: 150px;" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script src="~/js/uploadChange.js"></script>
+    <script>
+        $(function () {
+            $("input[type='file']").on("change", function () {
+                readURL(this);
+            });
+        });
+    </script>
+    <script>
+        CKEDITOR.replace('Description');
+    </script>
+}
