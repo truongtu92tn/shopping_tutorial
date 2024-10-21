@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using shopping_tutorial.Models;
 
 namespace shopping_tutorial.Repository
 {
-	public class DataContext: IdentityDbContext
+    public class DataContext : IdentityDbContext<AppUserModel>
 	{
 		public DataContext(DbContextOptions<DataContext> options):base(options) {
 		}
