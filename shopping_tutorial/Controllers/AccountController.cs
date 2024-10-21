@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using shopping_tutorial.Models;
+using shopping_tutorial.Models.LoginViewModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace shopping_tutorial.Controllers
@@ -17,15 +18,29 @@ namespace shopping_tutorial.Controllers
 			_signInManager = signInManager;
 		}
 
-		public IActionResult Index()
+		public IActionResult Login(string ReturnUrl)
         {
-            return View();
+            return View(new LoginViewModel { ReturnUrl = ReturnUrl});
         }
 
-
-        public async Task<IActionResult> Login(UserModel user)
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(UserModel user)
         {
-            return RedirectToAction("Index");
+			if (ModelState.IsValid)
+			{
+				var userLogin = new AppUserModel { UserName = user.Name, PasswordHash = user.Password };
+				Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user.Name, user.Password, false, false);
+				if (result.Succeeded)
+				{
+					TempData["success"] = "Login user thành công";
+					return View(result);
+					//return Redirect(user.ReturnUrl ?? "/");
+				}
+				ModelState.AddModelError("", "Username và Password không đúng");
+				
+			}
+				return View(user);
         }
 		public IActionResult Create()
 		{
@@ -47,11 +62,13 @@ namespace shopping_tutorial.Controllers
 
 				if (result.Succeeded)
 				{
+					TempData["success"] = "Tạo user thành công";
 					return RedirectToAction("Login");
 				}
 
 				foreach (IdentityError error in result.Errors)
 				{
+					TempData["error"] = $"Tạo user không thành công - {error.Description} ";
 					ModelState.AddModelError(string.Empty, error.Description);
 				}
 			}
@@ -59,5 +76,8 @@ namespace shopping_tutorial.Controllers
 			return View(user);
 		}
 
+
+
+			
 	}
 }
